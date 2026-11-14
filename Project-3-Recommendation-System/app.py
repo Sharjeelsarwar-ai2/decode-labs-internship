@@ -8,6 +8,7 @@ returns the Top 3 career paths with matched skills and skills to learn.
 import streamlit as st
 import pandas as pd
 import numpy as np
+from pathlib import Path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -112,7 +113,11 @@ st.markdown(
 )
 
 # ------------------------------------------------------------ load the dataset
-df = pd.read_csv("raw_skills.csv")
+# Resolve the CSV relative to this file, not the working directory:
+# Streamlit Cloud runs the app from the repo root, so a bare
+# "raw_skills.csv" would look in the wrong folder.
+DATA_PATH = Path(__file__).parent / "raw_skills.csv"
+df = pd.read_csv(DATA_PATH)
 df["skill_list"] = df["skills"].apply(lambda s: [x.strip() for x in s.split("|")])
 
 # --------------------------- TF-IDF: each role is one document made of its skills
