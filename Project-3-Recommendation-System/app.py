@@ -28,6 +28,9 @@ st.markdown(
 html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 #MainMenu { visibility: hidden; }
 footer { visibility: hidden; }
+/* remove Streamlit's top header bar (Share / Deploy toolbar) — it overlays the hero */
+header[data-testid="stHeader"] { display: none !important; }
+[data-testid="stToolbar"] { display: none !important; }
 .block-container { padding-top: 1.2rem; max-width: 1080px; }
 
 /* hero banner */
