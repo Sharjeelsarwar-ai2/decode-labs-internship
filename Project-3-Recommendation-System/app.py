@@ -23,77 +23,93 @@ st.set_page_config(
 st.markdown(
     """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 #MainMenu { visibility: hidden; }
 footer { visibility: hidden; }
-/* remove Streamlit's top header bar (Share / Deploy toolbar) — it overlays the hero */
-header[data-testid="stHeader"] { display: none !important; }
-[data-testid="stToolbar"] { display: none !important; }
+/* hide only the toolbar's right-side buttons (Share / Deploy) — NOT the
+   toolbar itself: the sidebar's expand button renders inside it */
+[data-testid="stToolbarActions"] { display: none !important; }
+[data-testid="stAppDeployButton"] { display: none !important; }
 .block-container { padding-top: 1.2rem; max-width: 1080px; }
 
-/* hero banner */
+/* warm paper page wash */
+.stApp { background: linear-gradient(180deg, #FBF1DF 0%, #FAF6EF 220px, #FAF6EF 100%); }
+
+/* hero banner — warm ember gradient, off-centre glow + film grain
+   (grain + serif type are what keep it from reading as AI-generated) */
 .hero {
-    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 48%, #DB2777 100%);
+    position: relative;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.16'/></svg>"),
+      radial-gradient(ellipse 55% 85% at 88% -10%, rgba(255, 196, 110, 0.55), rgba(255, 196, 110, 0) 65%),
+      radial-gradient(ellipse 70% 90% at 0% 110%, rgba(120, 40, 8, 0.5), rgba(120, 40, 8, 0) 60%),
+      linear-gradient(118deg, #2E1A0E 0%, #7A3416 46%, #C05A1E 78%, #DE8A2E 100%);
     border-radius: 22px;
     padding: 34px 36px 30px 36px;
-    color: #fff;
-    box-shadow: 0 18px 40px rgba(124, 58, 237, 0.28);
+    color: #FFF8EC;
+    box-shadow: 0 18px 40px rgba(122, 52, 22, 0.30);
     margin-bottom: 26px;
 }
-.hero h1 { color: #fff !important; font-size: 2.5rem !important; font-weight: 800;
-           letter-spacing: -0.02em; margin: 0 0 6px 0; line-height: 1.1; }
-.hero p { color: rgba(255,255,255,0.88); font-size: 1.05rem; margin: 0 0 18px 0; max-width: 640px; }
-.hero .stat { display: inline-block; background: rgba(255,255,255,0.16);
-              border: 1px solid rgba(255,255,255,0.28); color: #fff;
+.hero h1 { color: #FFF8EC !important; font-family: 'Fraunces', Georgia, serif !important;
+           font-size: 2.5rem !important; font-weight: 700;
+           letter-spacing: -0.01em; margin: 0 0 6px 0; line-height: 1.08; }
+.hero p { color: rgba(255, 244, 224, 0.92); font-size: 1.05rem; margin: 0 0 18px 0; max-width: 640px; }
+.hero .stat { display: inline-block; background: rgba(255, 248, 236, 0.14);
+              border: 1px solid rgba(255, 248, 236, 0.32); color: #FFF8EC;
               border-radius: 999px; padding: 6px 14px; font-size: 0.83rem;
               font-weight: 600; margin-right: 8px; }
 
 /* section heading */
-.section-title { font-size: 1.45rem; font-weight: 800; color: #111827;
+.section-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: #2E1A0E;
                  letter-spacing: -0.01em; margin: 6px 0 4px 0; }
-.section-sub { color: #6B7280; font-size: 0.95rem; margin-bottom: 18px; }
+.section-sub { color: #7A6A58; font-size: 0.95rem; margin-bottom: 18px; }
 
 /* recommendation card */
-.rec-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 18px;
+.rec-card { background: linear-gradient(180deg, #FFFDF8 0%, #FFF9EF 100%); border: 1px solid #EBDCC3; border-radius: 18px;
             padding: 22px 24px; margin-bottom: 16px;
-            box-shadow: 0 4px 16px rgba(17, 24, 39, 0.06); }
+            box-shadow: 0 4px 16px rgba(122, 52, 22, 0.07); }
 .rec-top { display: flex; align-items: center; gap: 14px; }
 .rank-badge { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 12px;
               display: flex; align-items: center; justify-content: center;
-              font-size: 1.25rem; font-weight: 800; color: #fff;
-              background: linear-gradient(135deg, #4F46E5, #7C3AED); }
-.role-name { font-size: 1.25rem; font-weight: 800; color: #111827; line-height: 1.2; }
-.role-sub { font-size: 0.86rem; color: #6B7280; margin-top: 2px; }
+              font-size: 1.25rem; font-weight: 800; color: #FFF8EC;
+              background: linear-gradient(135deg, #2E1A0E 0%, #8C3A1B 55%, #DE8A2E 100%); }
+.role-name { font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem; font-weight: 700; color: #2E1A0E; line-height: 1.2; }
+.role-sub { font-size: 0.86rem; color: #7A6A58; margin-top: 2px; }
 .score { margin-left: auto; text-align: right; }
-.score-num { font-size: 1.6rem; font-weight: 800; color: #4F46E5; line-height: 1; }
-.score-lbl { font-size: 0.72rem; color: #9CA3AF; font-weight: 600;
+.score-num { font-size: 1.6rem; font-weight: 800; color: #8C3A1B; line-height: 1; }
+.score-lbl { font-size: 0.72rem; color: #A89880; font-weight: 600;
              letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px; }
 
 /* match bar */
-.bar-track { height: 8px; background: #EDE9FE; border-radius: 999px;
+.bar-track { height: 8px; background: #F1E4D3; border-radius: 999px;
              margin: 16px 0 14px 0; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 999px;
-            background: linear-gradient(90deg, #4F46E5, #A855F7); }
+            background: linear-gradient(90deg, #DE8A2E, #C05A1E 55%, #8C3A1B); }
 
 /* skill chips */
 .chip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
-.chip-label { font-size: 0.78rem; font-weight: 700; color: #6B7280;
+.chip-label { font-size: 0.78rem; font-weight: 700; color: #A89880;
               text-transform: uppercase; letter-spacing: 0.05em; margin-right: 4px; }
-.chip-have { background: #DCFCE7; color: #15803D; border: 1px solid #BBF7D0;
+.chip-have { background: #E7F2E4; color: #2F6B3A; border: 1px solid #BFDDB4;
              border-radius: 999px; padding: 4px 12px; font-size: 0.85rem; font-weight: 600; }
-.chip-learn { background: #FFFBEB; color: #B45309; border: 1px solid #FDE68A;
+.chip-learn { background: #FDF0D5; color: #92400E; border: 1px solid #F3D9A4;
               border-radius: 999px; padding: 4px 12px; font-size: 0.85rem; font-weight: 600; }
 
 /* empty state */
-.empty-box { background: #F9FAFB; border: 1.5px dashed #D1D5DB; border-radius: 18px;
-             padding: 34px 28px; text-align: center; color: #6B7280; font-size: 1rem; }
-.empty-box b { color: #111827; }
+.empty-box { background: linear-gradient(180deg, #FFFDF8, #FBF3E4); border: 1.5px dashed #D9C7A7; border-radius: 18px;
+             padding: 34px 28px; text-align: center; color: #7A6A58; font-size: 1rem; }
+.empty-box b { color: #2E1A0E; }
 
-/* sidebar polish */
-section[data-testid="stSidebar"] { background: #F8F7FF; }
-section[data-testid="stSidebar"] h2 { color: #312E81; }
+/* sidebar — warm vertical gradient */
+section[data-testid="stSidebar"] { background: linear-gradient(180deg, #FBF3E4 0%, #F6E7CE 100%); }
+section[data-testid="stSidebar"] h2 { color: #2E1A0E; font-family: 'Fraunces', Georgia, serif; }
+
+/* primary button — warm gradient */
+.stButton > button { background: linear-gradient(120deg, #8C3A1B, #DE8A2E); color: #FFF8EC !important;
+                     border: none; font-weight: 700; border-radius: 999px; }
+.stButton > button:hover { background: linear-gradient(120deg, #7A3416, #C05A1E); color: #FFF8EC !important; }
 </style>
 """,
     unsafe_allow_html=True,
