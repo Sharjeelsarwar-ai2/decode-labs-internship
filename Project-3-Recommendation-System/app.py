@@ -29,7 +29,11 @@ html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
 #MainMenu { visibility: hidden; }
 footer { visibility: hidden; }
 /* hide only the toolbar's right-side buttons (Share / Deploy) — NOT the
-   toolbar itself: the sidebar's expand button renders inside it */
+   toolbar itself: the sidebar's expand button renders inside it.
+   The header/toolbar stay in the DOM but fully transparent, so no white
+   strip shows above the hero. */
+header[data-testid="stHeader"] { background: transparent !important; }
+[data-testid="stToolbar"] { background: transparent !important; }
 [data-testid="stToolbarActions"] { display: none !important; }
 [data-testid="stAppDeployButton"] { display: none !important; }
 .block-container { padding-top: 1.2rem; max-width: 1080px; }
