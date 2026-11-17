@@ -86,3 +86,26 @@ your own to try it on something else.
 
 - `Decodelabs_project_4.ipynb` — the full notebook, with outputs (including the
   side-by-side pre-processing figure and the boxed detection figure) embedded.
+- `app.py` — the Streamlit app: the notebook's exact pipeline as a live web UI.
+- `notebook_outputs.py` — the notebook's recorded figures + numbers (base64, text-only).
+- `requirements.txt` — Python packages for Streamlit Cloud.
+- `packages.txt` — system package for Streamlit Cloud: `tesseract-ocr`.
+
+## Live app (Streamlit)
+
+`app.py` runs the notebook's exact pipeline on any uploaded image and shows
+the recorded Colab run on the Vultr certificate (figures, 89.1%, 30/33 words,
+PASS). Dark ink + emerald UI, no Streamlit header.
+
+Deploy on Streamlit Community Cloud (free, from this GitHub repo):
+
+1. Go to https://share.streamlit.io/ and sign in with GitHub.
+2. **New app** → Repository: `Sharjeelsarwar-ai2/decode-labs-internship`,
+   Branch: `main`, Main file path:
+   `Project-4-Image-Text-Recognition/app.py` → **Deploy**.
+3. Streamlit Cloud installs `requirements.txt` and `packages.txt`
+   (which provides the `tesseract` binary) automatically. Every later push
+   to this folder redeploys the app on its own — no new click needed.
+
+Run locally: `pip install -r requirements.txt` (plus `tesseract-ocr` from
+your system package manager), then `streamlit run app.py`.
